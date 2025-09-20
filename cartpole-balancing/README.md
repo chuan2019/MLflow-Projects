@@ -34,13 +34,42 @@ mlflow-project/
 ### Prerequisites
 
 - Docker and Docker Compose
-- Python 3.9+ (for local development)
+- GNU Make
+- Python 3.9+ (optional, for local development only)
 
-### 1. Start MLflow Tracking Server
+### Simple Workflow
 
 ```bash
-# Start only the MLflow tracking server
-docker-compose up mlflow-server -d
+# 1. Setup workspace
+make workspace-setup
+
+# 2. Train the model  
+make train
+
+# 3. Serve the model
+make serve
+
+# 4. Test the API
+make test-api
+
+# Stop everything when done
+make stop
+```
+
+### See All Available Commands
+
+```bash
+make help
+```
+
+### 1. Setup Workspace
+
+```bash
+# Complete workspace setup (build images + start MLflow)
+make workspace-setup
+
+# Or just start MLflow tracking server
+make setup
 
 # MLflow UI will be available at http://localhost:5000
 ```
@@ -55,7 +84,10 @@ This project supports two development approaches:
 
 ```bash
 # Train using Docker (recommended)
-docker-compose --profile training up cartpole-trainer
+make train
+
+# Quick training with fewer episodes for testing
+make quick-train
 
 # No local Python installation required!
 ```
@@ -70,15 +102,11 @@ docker-compose --profile training up cartpole-trainer
 **When to use**: Active development, debugging, IDE integration, quick iteration.
 
 ```bash
-# Optional: Create virtual environment for IDE support
-./venv.sh create
-./venv.sh install
-
-# Activate environment
-source .venv/bin/activate
+# Optional: Install dependencies locally for IDE support
+make install
 
 # Train locally (for development)
-python src/train.py --episodes 100
+make train-local
 ```
 
 **Pros**: 
@@ -91,10 +119,75 @@ python src/train.py --episodes 100
 ### 3. Serve the Model
 
 ```bash
-# Start model serving
-docker-compose --profile serving up model-server
+# Start model serving using Docker
+make serve
+
+# Or serve locally (for development)
+make serve-local
 
 # API will be available at http://localhost:8080
+```
+
+### 4. Test the Complete Pipeline
+
+```bash
+# Test API endpoints
+make test-api
+
+# Run comprehensive tests (setup + train + serve + test)
+make test-all
+
+# Quick demo of everything
+make demo
+```
+
+## Available Make Commands
+
+Run `make help` to see all available commands:
+
+```bash
+make help
+```
+
+**Key Commands:**
+- `make workspace-setup` - Complete workspace setup
+- `make train` - Train model using Docker
+- `make serve` - Serve model using Docker  
+- `make test-api` - Test API endpoints
+- `make test-all` - Full integration test
+- `make status` - Show service status
+- `make logs` - Show service logs
+- `make stop` - Stop all services
+- `make clean` - Clean up containers and volumes
+
+## Common Workflows
+
+### First Time Setup
+```bash
+make workspace-setup    # Build images and start MLflow
+make train              # Train the model
+make serve              # Start serving
+make test-api           # Verify everything works
+```
+
+### Development Cycle
+```bash
+make train              # Train with new changes
+make serve              # Update serving
+make test-api           # Test the changes
+```
+
+### Quick Testing
+```bash
+make demo               # Complete automated demo
+```
+
+### Troubleshooting
+```bash
+make status             # Check service status
+make logs               # View logs
+make restart            # Restart services
+make clean              # Clean up and restart fresh
 ```
 
 ## Environment Details

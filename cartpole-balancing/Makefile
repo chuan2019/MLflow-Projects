@@ -12,7 +12,7 @@
 # 3. make serve          # Serve using Docker
 # 4. make test-api       # Test the API
 
-.PHONY: help setup train serve clean logs stop venv-create venv-install test-local
+.PHONY: help setup train serve clean logs stop status restart build test-all workspace-setup venv-create venv-install test-local
 
 # Virtual environment settings
 VENV_DIR := .venv
@@ -88,6 +88,24 @@ stop:  ## Stop all services
 	docker-compose down
 	@echo "All services stopped"
 
+status:  ## Show status of all services
+	@echo "Service status:"
+	docker-compose ps
+
+restart:  ## Restart all services
+	@echo "Restarting services..."
+	docker-compose restart
+
+build:  ## Build all Docker images
+	@echo "Building Docker images..."
+	docker-compose build
+
+workspace-setup:  ## Complete workspace setup (build + start MLflow)
+	@echo "Setting up complete workspace..."
+	@make build
+	@make setup
+	@echo "Workspace ready! MLflow UI: http://localhost:5000"
+
 clean:  ## Clean up Docker containers and volumes
 	@echo "Cleaning up..."
 	docker-compose down -v
@@ -125,6 +143,18 @@ demo:  ## Run a quick demo
 	@make serve-local &
 	@sleep 10
 	@make test-api
+
+test-all:  ## Run comprehensive tests (build, train, serve, test)
+	@echo "Running comprehensive test suite..."
+	@make workspace-setup
+	@echo "Starting training..."
+	@make train
+	@echo "Starting model server..."
+	@make serve &
+	@sleep 15
+	@echo "Testing API..."
+	@make test-api
+	@echo "All tests completed successfully!"
 
 clean:  ## Clean up Docker containers, volumes, and virtual environment
 	@echo "Cleaning up..."
