@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  mlflow-server:
+    image: python:3.9-slim
+    container_name: mlflow-tracking-server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/app/mlruns
+      - ./models:/app/models
+    working_dir: /app
+    command: >
+      bash -c "
+        pip install mlflow==2.7.1 &&
+        mlflow server 
+        --backend-store-uri sqlite:///mlflow.db 
+        --default-artifact-root ./mlruns 
+        --host 0.0.0.0 
+        --port 5000
+      "
+    environment:
+      - MLFLOW_TRACKING_URI=http://localhost:5000
+    networks:
+      - mlflow-network
+
+  cartpole-trainer:
+    build:
+      context: .
+      dockerfile: Dockerfile.trainer
+    container_name: cartpole-trainer
+    volumes:
+      - ./src:/app/src
+      - ./models:/app/models
+      - ./mlruns:/app/mlruns
+      - ./.env:/app/.env
+    working_dir: /app
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow-server:5000
+    depends_on:
+      - mlflow-server
+    networks:
+      - mlflow-network
+    profiles:
+      - training
+
+  model-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: cartpole-model-server
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src:/app/src
+      - ./models:/app/models
+      - ./.env:/app/.env
+    working_dir: /app
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow-server:5000
+      - MODEL_PATH=/app/models/best_model.pth
+    depends_on:
+      - mlflow-server
+    networks:
+      - mlflow-network
+    profiles:
+      - serving
+
+networks:
+  mlflow-network:
+    driver: bridge
+
+volumes:
+  mlruns:
+  models:
