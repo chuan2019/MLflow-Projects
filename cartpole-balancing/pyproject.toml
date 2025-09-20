@@ -1,0 +1,60 @@
+[project]
+name = "cartpole-dqn"
+version = "0.1.0"
+description = "CartPole Deep Q-Network with MLflow integration"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "gymnasium==0.29.1",
+    "torch==2.0.1",
+    "torchvision==0.15.2", 
+    "numpy==1.24.3",
+    "matplotlib==3.7.2",
+    "mlflow==2.7.1",
+    "flask==2.3.3",
+    "pandas==2.0.3",
+    "seaborn==0.12.2",
+    "python-dotenv==1.0.0",
+    "scikit-learn==1.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "jupyterlab>=4.0.0",
+]
+
+[project.scripts]
+cartpole-train = "src.train:main"
+cartpole-serve = "src.serve:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=src --cov-report=html --cov-report=term-missing"

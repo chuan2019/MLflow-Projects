@@ -104,11 +104,14 @@ class MLflowTracker:
         plt.tight_layout()
         
         # Save and log plot
-        plot_path = "plots/reward_plot.png"
-        os.makedirs("plots", exist_ok=True)
-        plt.savefig(plot_path)
-        mlflow.log_artifact(plot_path, "plots")
-        plt.close()
+        import tempfile
+        with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp:
+            plot_path = tmp.name
+            plt.savefig(plot_path)
+            mlflow.log_artifact(plot_path, "plots")
+            plt.close()
+            # Clean up
+            os.unlink(plot_path)
     
     def log_loss_plot(self, losses):
         """Create and log loss plot."""
@@ -123,11 +126,14 @@ class MLflowTracker:
         plt.grid(True)
         
         # Save and log plot
-        plot_path = "plots/loss_plot.png"
-        os.makedirs("plots", exist_ok=True)
-        plt.savefig(plot_path)
-        mlflow.log_artifact(plot_path, "plots")
-        plt.close()
+        import tempfile
+        with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp:
+            plot_path = tmp.name
+            plt.savefig(plot_path)
+            mlflow.log_artifact(plot_path, "plots")
+            plt.close()
+            # Clean up
+            os.unlink(plot_path)
     
     def log_performance_summary(self, rewards, solved_threshold=195, window_size=100):
         """Log performance summary metrics."""
