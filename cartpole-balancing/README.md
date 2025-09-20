@@ -45,24 +45,48 @@ docker-compose up mlflow-server -d
 # MLflow UI will be available at http://localhost:5000
 ```
 
-### 2. Train the Model
+### 2. Development & Training
 
-#### Option A: Using Docker
+This project supports two development approaches:
+
+#### Option A: Docker-Only (Recommended for Testing/Production)
+
+**When to use**: Testing, CI/CD, production deployment, or when you want guaranteed environment consistency.
 
 ```bash
-# Train using Docker
+# Train using Docker (recommended)
 docker-compose --profile training up cartpole-trainer
+
+# No local Python installation required!
 ```
 
-#### Option B: Local Development
+**Pros**: 
+- Identical environment across all machines
+- No local dependency management
+- Perfect for testing and production
+
+#### Option B: Local Development with Virtual Environment
+
+**When to use**: Active development, debugging, IDE integration, quick iteration.
 
 ```bash
-# Install dependencies
-pip install -r requirements.txt
+# Optional: Create virtual environment for IDE support
+./venv.sh create
+./venv.sh install
 
-# Train locally
-python src/train.py
+# Activate environment
+source .venv/bin/activate
+
+# Train locally (for development)
+python src/train.py --episodes 100
 ```
+
+**Pros**: 
+- Full IDE support (code completion, debugging)
+- Faster iteration for small changes
+- Easy debugging and profiling
+
+**Note**: Local virtual environment is **optional** and primarily for IDE support. All testing and deployment should use Docker.
 
 ### 3. Serve the Model
 
