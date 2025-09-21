@@ -89,30 +89,7 @@ stop:  ## Stop all services
 	@echo "All services stopped"
 
 status:  ## Show status of all services
-	@echo "Service status:"
-	docker compose ps
-
-restart:  ## Restart all services
-	@echo "Restarting services..."
-	docker compose restart
-
-build:  ## Build all Docker images
-	@echo "Building Docker images..."
-	docker compose build
-
-workspace-setup:  ## Complete workspace setup (build + start MLflow)
-	@echo "Setting up complete workspace..."
-	@make build
-	@make setup
-	@echo "Workspace ready! MLflow UI: http://localhost:5000"
-
-down:  ## Stop all services and remove containers
-	@echo "Stopping all services..."
-	docker compose down
-	@echo "All services stopped"
-
-status:  ## Show status of all services
-	@echo "Service status:"
+	@echo "Service status..."
 	docker compose ps
 
 restart:  ## Restart all services
