@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   mlflow-server:
     image: python:3.9-slim
