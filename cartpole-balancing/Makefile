@@ -106,17 +106,19 @@ workspace-setup:  ## Complete workspace setup (build + start MLflow)
 	@make setup
 	@echo "Workspace ready! MLflow UI: http://localhost:5000"
 
-down:  ## Clean up Docker containers and volumes
-	@echo "Cleaning up Docker ..."
-	docker-compose down -v
-	docker system prune -f
-	@echo "Docker Cleanup complete"
+down:  ## Stop all services and remove containers
+	@echo "Stopping all services..."
+	docker-compose down
+	@echo "All services stopped"
 
 clean:  ## Clean up Docker containers, volumes, and virtual environment
-	@echo "Cleaning up Docker ..."
-	docker-compose down -v
+	@echo "Stopping all services (including profiles)..."
+	docker-compose --profile training --profile serving down
+	@echo "Removing volumes and networks..."
+	docker-compose down -v --remove-orphans
+	@echo "Pruning Docker system..."
 	docker system prune -f
-	@echo "Docker Cleanup complete"
+	@echo "Docker cleanup complete"
 	@echo "Cleaning up virtual environment..."
 	./venv.sh clean
 	@echo "Virtual environment cleanup complete"
