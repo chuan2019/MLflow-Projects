@@ -34,12 +34,12 @@ venv-install:  ## Install dependencies in virtual environment
 
 setup: venv-create  ## Setup the project (create venv and start MLflow server)
 	@echo "Starting MLflow tracking server..."
-	docker-compose up mlflow-server -d
+	docker compose up mlflow-server -d
 	@echo "MLflow UI available at http://localhost:5000"
 
 train:  ## Train the DQN model using Docker
 	@echo "Starting DQN training..."
-	docker-compose --profile training up cartpole-trainer
+	docker compose --profile training up cartpole-trainer
 
 train-local:  ## Train locally using virtual environment
 	@echo "Starting local DQN training..."
@@ -47,7 +47,7 @@ train-local:  ## Train locally using virtual environment
 
 serve:  ## Serve the trained model using Docker
 	@echo "Starting model server..."
-	docker-compose --profile serving up model-server
+	docker compose --profile serving up model-server
 
 serve-local:  ## Serve model locally using virtual environment
 	@echo "Starting local model server..."
@@ -81,24 +81,24 @@ lint:  ## Lint code with flake8
 	./venv.sh run flake8 src/
 
 logs:  ## Show logs for all services
-	docker-compose logs -f
+	docker compose logs -f
 
 stop:  ## Stop all services
 	@echo "Stopping all services..."
-	docker-compose down
+	docker compose down
 	@echo "All services stopped"
 
 status:  ## Show status of all services
 	@echo "Service status:"
-	docker-compose ps
+	docker compose ps
 
 restart:  ## Restart all services
 	@echo "Restarting services..."
-	docker-compose restart
+	docker compose restart
 
 build:  ## Build all Docker images
 	@echo "Building Docker images..."
-	docker-compose build
+	docker compose build
 
 workspace-setup:  ## Complete workspace setup (build + start MLflow)
 	@echo "Setting up complete workspace..."
@@ -108,14 +108,37 @@ workspace-setup:  ## Complete workspace setup (build + start MLflow)
 
 down:  ## Stop all services and remove containers
 	@echo "Stopping all services..."
-	docker-compose down
+	docker compose down
+	@echo "All services stopped"
+
+status:  ## Show status of all services
+	@echo "Service status:"
+	docker compose ps
+
+restart:  ## Restart all services
+	@echo "Restarting services..."
+	docker compose restart
+
+build:  ## Build all Docker images
+	@echo "Building Docker images..."
+	docker compose build
+
+workspace-setup:  ## Complete workspace setup (build + start MLflow)
+	@echo "Setting up complete workspace..."
+	@make build
+	@make setup
+	@echo "Workspace ready! MLflow UI: http://localhost:5000"
+
+down:  ## Stop all services and remove containers
+	@echo "Stopping all services..."
+	docker compose down
 	@echo "All services stopped"
 
 clean:  ## Clean up Docker containers, volumes, and virtual environment
 	@echo "Stopping all services (including profiles)..."
-	docker-compose --profile training --profile serving down
+	docker compose --profile training --profile serving down
 	@echo "Removing volumes and networks..."
-	docker-compose down -v --remove-orphans
+	docker compose down -v --remove-orphans
 	@echo "Pruning Docker system..."
 	docker system prune -f
 	@echo "Docker cleanup complete"
