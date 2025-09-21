@@ -10,6 +10,16 @@ This project demonstrates how to:
 - Deploy models using Docker Compose
 - Serve trained models via REST API
 
+## References
+
+1. Swagat K. (2020) _Balancing a CartPole System with Reinforcement Learning - A Tutorial_ [arXiv:2006.04938](https://arxiv.org/pdf/2006.04938)
+
+2. Melrose R., James M.G., and Stefanie T. (2017) _Implementing the Deep Q-Network_ [arXiv:1711.07478](https://arxiv.org/pdf/1711.07478)
+
+3. Mark T. (2017) _Reinforcement Learning (DQN) Tutorial_ [PyTorch Tutorials](https://docs.pytorch.org/tutorials/intermediate/reinforcement_q_learning.html)
+
+4. Erfan A. (2023) _Reinforcement Learning with PyTorch: Mastering CartPole-v0!_ [LinkedIn](https://www.linkedin.com/pulse/reinforcement-learning-pytorch-mastering-cartpole-v0-akbarnezhad/)
+
 ## Project Structure
 
 ```
