@@ -156,13 +156,18 @@ demo:  ## Run a quick demo
 	@make test-api
 
 test-all:  ## Run comprehensive tests (build, train, serve, test)
-	@echo "Running comprehensive test suite..."
-	@make workspace-setup
-	@echo "Starting training..."
-	@make train
-	@echo "Starting model server..."
-	@make serve &
-	@sleep 15
-	@echo "Testing API..."
-	@make test-api
-	@echo "All tests completed successfully!"
+	@bash -c ' \
+	set -e; \
+	trap "make down" EXIT; \
+	echo "Running comprehensive test suite..."; \
+	make workspace-setup; \
+	echo "Starting training..."; \
+	make train; \
+	echo "Starting model server..."; \
+	make serve & \
+	SERVER_PID=$$!; \
+	sleep 15; \
+	echo "Testing API..."; \
+	make test-api; \
+	echo "All tests completed successfully!"; \
+	'
