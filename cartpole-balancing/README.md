@@ -158,7 +158,7 @@ make help
 - `make status` - Show service status
 - `make logs` - Show service logs
 - `make stop` - Stop all services
-- `make clean` - Clean up containers and volumes
+- `make clean` - Clean up containers and volumes, prune Docker system resources, and remove the Python virtual environment
 
 ## Common Workflows
 
