@@ -18,7 +18,9 @@ This project demonstrates how to:
 
 3. Mark T. (2017) _Reinforcement Learning (DQN) Tutorial_ [PyTorch Tutorials](https://docs.pytorch.org/tutorials/intermediate/reinforcement_q_learning.html)
 
-4. Erfan A. (2023) _Reinforcement Learning with PyTorch: Mastering CartPole-v0!_ [LinkedIn](https://www.linkedin.com/pulse/reinforcement-learning-pytorch-mastering-cartpole-v0-akbarnezhad/)
+4. _DQN debugging using Open AI gym Cartpole_ [ADG Efficiency Blog](https://adgefficiency.com/dqn-debugging/); _DDQN hyperparameter tuning using Open AI gym Cartpole_ [ADG Efficiency Blog](https://adgefficiency.com/dqn-tuning/); _Solving Open AI gym Cartpole using DDQN_ [ADG Efficiency Blog](https://adgefficiency.com/dqn-solving/)
+
+5. Erfan A. (2023) _Reinforcement Learning with PyTorch: Mastering CartPole-v0!_ [LinkedIn](https://www.linkedin.com/pulse/reinforcement-learning-pytorch-mastering-cartpole-v0-akbarnezhad/)
 
 ## Project Structure
 
