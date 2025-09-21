@@ -28,6 +28,7 @@ services:
       - ./models:/app/models
       - ./mlruns:/app/mlruns
       - ./.env:/app/.env
+      - ./notebooks:/app/notebooks
     working_dir: /app
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow-server:5000
@@ -49,6 +50,7 @@ services:
       - ./src:/app/src
       - ./models:/app/models
       - ./.env:/app/.env
+      - ./notebooks:/app/notebooks
     working_dir: /app
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow-server:5000
