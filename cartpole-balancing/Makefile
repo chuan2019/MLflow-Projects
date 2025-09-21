@@ -12,7 +12,7 @@
 # 3. make serve          # Serve using Docker
 # 4. make test-api       # Test the API
 
-.PHONY: help setup train serve clean logs stop status restart build test-all workspace-setup venv-create venv-install test-local
+.PHONY: help setup train serve clean logs stop status restart build test-all workspace-setup venv-create venv-install test-local down
 
 # Virtual environment settings
 VENV_DIR := .venv
