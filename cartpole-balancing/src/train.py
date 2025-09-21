@@ -173,12 +173,11 @@ def train_dqn_agent(args, tracker=None):
         
         # Print progress
         if episode % 100 == 0 or episode == args.episodes - 1:
-            loss_str = f"{avg_loss:.4f}" if avg_loss is not None else "N/A"
             print(f"Episode {episode:4d} | "
                   f"Reward: {total_reward:6.1f} | "
                   f"Avg Reward: {avg_reward:6.1f} | "
                   f"Epsilon: {agent.epsilon:.3f} | "
-                  f"Loss: {loss_str:>6}")
+                  f"Loss: {avg_loss:.4f if avg_loss else 'N/A':>6}")
     
     env.close()
     

@@ -33,11 +33,11 @@ class TestRunner:
         
         try:
             test_func()
-            print(f"✓ PASSED: {test_name}")
+            print(f"[PASS] {test_name}")
             self.passed_tests += 1
             self.results.append((test_name, "PASSED", None))
         except Exception as e:
-            print(f"✗ FAILED: {test_name}")
+            print(f"[FAIL] {test_name}")
             print(f"Error: {str(e)}")
             print(f"Traceback: {traceback.format_exc()}")
             self.failed_tests += 1
@@ -101,7 +101,7 @@ def test_python_imports():
             spec = importlib.util.spec_from_file_location(module_name, SRC_DIR / f"{module_name}.py")
             module = importlib.util.module_from_spec(spec)
             # Don't actually execute the module, just check if it can be loaded
-            print(f"✓ Module {module_name} can be imported")
+            print(f"[OK] Module {module_name} can be imported")
         except Exception as e:
             raise ImportError(f"Failed to import {module_name}: {str(e)}")
 
@@ -122,7 +122,7 @@ def test_dependencies():
     for package in required_packages:
         try:
             __import__(package.replace("-", "_"))
-            print(f"✓ Package {package} is available")
+            print(f"[OK] Package {package} is available")
         except ImportError:
             missing_packages.append(package)
     
@@ -147,7 +147,7 @@ def test_environment_config():
     
     for var in required_env_vars:
         assert var in content, f"Environment variable {var} not found in .env"
-        print(f"✓ Environment variable {var} found")
+        print(f"[OK] Environment variable {var} found")
 
 def test_docker_config():
     """Test Docker configuration"""
@@ -165,7 +165,7 @@ def test_docker_config():
     if result.returncode != 0:
         raise RuntimeError(f"Docker compose config invalid: {result.stderr}")
     
-    print("✓ Docker Compose configuration is valid")
+    print("[OK] Docker Compose configuration is valid")
 
 def test_dqn_agent_basic():
     """Test basic DQN agent functionality"""
@@ -184,7 +184,7 @@ def test_dqn_agent_basic():
         assert hasattr(dqn_module, 'DQNAgent'), "DQNAgent class not found"
         assert hasattr(dqn_module, 'ReplayBuffer'), "ReplayBuffer class not found"
         
-        print("✓ All required classes found in dqn_agent.py")
+        print("[OK] All required classes found in dqn_agent.py")
         
         # Test basic instantiation (if dependencies are available)
         try:
@@ -194,12 +194,12 @@ def test_dqn_agent_basic():
             # Test DQN network
             dqn = dqn_module.DQN(input_size=4, hidden_size=64, output_size=2)
             assert dqn is not None
-            print("✓ DQN network can be instantiated")
+            print("[OK] DQN network can be instantiated")
             
             # Test replay buffer
             buffer = dqn_module.ReplayBuffer(capacity=1000)
             assert len(buffer) == 0
-            print("✓ ReplayBuffer can be instantiated")
+            print("[OK] ReplayBuffer can be instantiated")
             
         except ImportError:
             print("! Skipping instantiation tests (dependencies not available)")
@@ -222,7 +222,7 @@ def test_mlflow_utils_basic():
         assert hasattr(mlflow_module, 'MLflowTracker'), "MLflowTracker class not found"
         assert hasattr(mlflow_module, 'get_best_model_uri'), "get_best_model_uri function not found"
         
-        print("✓ All required classes/functions found in mlflow_utils.py")
+        print("[OK] All required classes/functions found in mlflow_utils.py")
         
     except Exception as e:
         raise RuntimeError(f"Failed to load mlflow_utils module: {str(e)}")
@@ -246,7 +246,7 @@ def test_training_script_structure():
     
     for pattern in required_patterns:
         assert pattern in content, f"Required pattern '{pattern}' not found in train.py"
-        print(f"✓ Pattern '{pattern}' found in train.py")
+        print(f"[OK] Pattern '{pattern}' found in train.py")
 
 def test_serving_script_structure():
     """Test serving script structure"""
@@ -267,7 +267,7 @@ def test_serving_script_structure():
     
     for pattern in required_patterns:
         assert pattern in content, f"Required pattern '{pattern}' not found in serve.py"
-        print(f"✓ Pattern '{pattern}' found in serve.py")
+        print(f"[OK] Pattern '{pattern}' found in serve.py")
 
 def test_makefile_commands():
     """Test Makefile has required commands"""
@@ -287,7 +287,7 @@ def test_makefile_commands():
     
     for command in required_commands:
         assert command in content, f"Required command '{command}' not found in Makefile"
-        print(f"✓ Command '{command}' found in Makefile")
+        print(f"[OK] Command '{command}' found in Makefile")
 
 def test_requirements_validity():
     """Test that requirements.txt has valid package specifications"""
@@ -305,10 +305,10 @@ def test_requirements_validity():
             assert '==' in line or '>=' in line or '<=' in line or '>' in line or '<' in line, \
                 f"Invalid package specification: {line}"
             package_count += 1
-            print(f"✓ Valid package spec: {line}")
+            print(f"[OK] Valid package spec: {line}")
     
     assert package_count > 0, "No packages found in requirements.txt"
-    print(f"✓ Found {package_count} package specifications")
+    print(f"[OK] Found {package_count} package specifications")
 
 def main():
     """Run all tests"""
