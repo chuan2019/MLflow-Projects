@@ -106,11 +106,20 @@ workspace-setup:  ## Complete workspace setup (build + start MLflow)
 	@make setup
 	@echo "Workspace ready! MLflow UI: http://localhost:5000"
 
-clean:  ## Clean up Docker containers and volumes
-	@echo "Cleaning up..."
+down:  ## Clean up Docker containers and volumes
+	@echo "Cleaning up Docker ..."
 	docker-compose down -v
 	docker system prune -f
-	@echo "Cleanup complete"
+	@echo "Docker Cleanup complete"
+
+clean:  ## Clean up Docker containers, volumes, and virtual environment
+	@echo "Cleaning up Docker ..."
+	docker-compose down -v
+	docker system prune -f
+	@echo "Docker Cleanup complete"
+	@echo "Cleaning up virtual environment..."
+	./venv.sh clean
+	@echo "Virtual environment cleanup complete"
 
 install:  ## Install Python dependencies in virtual environment
 	@echo "Installing dependencies..."
@@ -155,10 +164,3 @@ test-all:  ## Run comprehensive tests (build, train, serve, test)
 	@echo "Testing API..."
 	@make test-api
 	@echo "All tests completed successfully!"
-
-clean:  ## Clean up Docker containers, volumes, and virtual environment
-	@echo "Cleaning up..."
-	docker-compose down -v
-	docker system prune -f
-	./venv.sh clean
-	@echo "Cleanup complete"
